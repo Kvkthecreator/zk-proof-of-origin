@@ -33,19 +33,21 @@ The AI-transparency branch (Phase 2) swaps the attestor witness for a zkML model
 
 This proposal is not a vision doc. The core primitive is implemented, tested, and runnable:
 
-- **`packages/circuits`** — `OriginProof` ZkProgram with two methods:
+- **`packages/circuits`** — `OriginProof` ZkProgram with three methods:
   - `proveHuman` — wallet-signature-only binding (simpler fallback).
   - `proveHumanWithAttestor` — wallet + **real in-circuit ECDSA-secp256k1 verification** of an attestor's signature, plus a Poseidon commitment over the attestor's foreign-curve pubkey.
-  - 11/11 tests green, including forged-signature rejection. Measured on M-series Mac in Node:
-    - Compile: ~41s (one-time, cacheable)
-    - Prove (attested): ~13s
-    - Prove (wallet-only): ~5s
+  - `proveHumanWithReclaimAttestor` — the Reclaim-compatible mode: verifies an attestor's ECDSA-secp256k1 signature over the Reclaim keccak claim digest, then **computes `keccak256(attestorPubKey)[12:]` in-circuit** to derive the attestor's 20-byte Ethereum address and binds it to the public input. This is the axiomatic primitive: verifies a real Reclaim-shaped signed claim, entirely in circuit, against a trusted attestor address.
+  - 15/15 tests green, including forged-signature rejection. Measured on M-series Mac in Node:
+    - Compile: ~61s (one-time, cacheable)
+    - Prove (wallet-only): ~7s
+    - Prove (attested, Poseidon commitment): ~17s
+    - Prove (Reclaim-style, keccak + Ethereum address): ~18s
     - Verify: <1s
 - **`packages/web`** — React/Vite SPA with client-side proving, Poseidon content hashing, creator flow (text → prove with staged progress bar → shareable URL via hash fragment), and verifier flow (paste URL → verify locally → display origin type). Observed real browser prove time: **~4.6s** (wallet-only) on the development machine.
 - **`docs/analysis/`** — five research documents covering: the httpz-vs-reality gap, credential-provider comparison (Reclaim vs zkPass vs ZKON vs zkEmail), a source-level audit of Reclaim's upstream, the pivot decision rationale, and empirical spike results.
 - **`DECISIONS.md`** — seven architectural decisions with rationale, consequences, and supersession chain.
 
-Repository: [TBD — to be filled on submission]. Demo video: [TBD — see §Demo].
+Repository: [github.com/Kvkthecreator/zk-proof-of-origin](https://github.com/Kvkthecreator/zk-proof-of-origin). Demo video: [TBD — see §Links].
 
 ## Why Mina (sharp version)
 
@@ -124,7 +126,7 @@ The output is a standard Mina proof. Any application can verify it:
 
 ## Links
 
-- **Repository:** [TBD — populate on submission]
+- **Repository:** https://github.com/Kvkthecreator/zk-proof-of-origin
 - **Demo video:** [TBD — see `content/demo-script.md`]
 - **Live demo:** [TBD — after Milestone 4 testnet deploy + static hosting]
 - **Analysis docs:** [docs/analysis/](analysis/)
