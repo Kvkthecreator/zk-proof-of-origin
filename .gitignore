@@ -24,3 +24,6 @@ coverage/
 
 # o1js build artifacts
 packages/circuits/build/
+
+# Demo video raw takes (keep the script, not the takes)
+content/demo-raw/
