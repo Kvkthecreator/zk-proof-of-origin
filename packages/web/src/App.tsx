@@ -1,13 +1,54 @@
+import { useMemo, useState } from 'react';
+import { CreatorTab } from './components/CreatorTab';
+import { VerifierTab } from './components/VerifierTab';
+import { readProofFromLocation } from './proofEncoding';
+import './styles.css';
+
+type TabKey = 'create' | 'verify';
+
 export function App() {
+  const initialEncoded = useMemo(
+    () => readProofFromLocation(window.location.search, window.location.hash),
+    []
+  );
+  const [tab, setTab] = useState<TabKey>(
+    initialEncoded ? 'verify' : 'create'
+  );
+
   return (
-    <div style={{ maxWidth: 640, margin: '80px auto', fontFamily: 'system-ui, sans-serif' }}>
-      <h1 style={{ fontSize: 28, fontWeight: 700 }}>zk-proof-of-origin</h1>
-      <p style={{ color: '#666', marginTop: 8 }}>
-        Cryptographic proof of content origin on Mina Protocol.
-      </p>
-      <p style={{ marginTop: 24, color: '#999', fontSize: 14 }}>
-        Phase 0 — scaffold complete. Circuit and UI development in progress.
-      </p>
+    <div className="app">
+      <header className="header">
+        <h1>zk-proof-of-origin</h1>
+        <p>
+          Cryptographic proof of content origin on Mina Protocol — generate and
+          verify provenance proofs, all in-browser.
+        </p>
+      </header>
+
+      <nav className="tabs" role="tablist">
+        <button
+          className={`tab ${tab === 'create' ? 'active' : ''}`}
+          role="tab"
+          aria-selected={tab === 'create'}
+          onClick={() => setTab('create')}
+        >
+          Create
+        </button>
+        <button
+          className={`tab ${tab === 'verify' ? 'active' : ''}`}
+          role="tab"
+          aria-selected={tab === 'verify'}
+          onClick={() => setTab('verify')}
+        >
+          Verify
+        </button>
+      </nav>
+
+      {tab === 'create' ? (
+        <CreatorTab />
+      ) : (
+        <VerifierTab initialEncoded={initialEncoded} />
+      )}
     </div>
   );
 }

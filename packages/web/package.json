@@ -11,6 +11,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@zk-proof-of-origin/circuits": "0.1.0",
+    "o1js": "^2.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
