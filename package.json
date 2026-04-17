@@ -1,0 +1,15 @@
+{
+  "name": "zk-proof-of-origin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cryptographic proof of content origin on Mina Protocol",
+  "workspaces": [
+    "packages/circuits",
+    "packages/web"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces",
+    "build": "npm run build --workspaces"
+  },
+  "license": "MIT"
+}
