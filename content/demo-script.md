@@ -31,8 +31,8 @@
 **VO:** "The whole proof is in the URL hash. No server. No database. Send it however you send links."
 
 ### Shot 5 — 0:52–1:12 · Verify in a fresh tab
-**Visual:** open a new browser tab, paste URL. Page auto-switches to the Verify tab, runs, shows "Proof is valid" with origin type and verify time.
-**VO:** "A verifier runs the same cryptography in their browser. Verification is under a second. No blockchain call required — though the proof commitment is also anchored on Mina testnet for an optional on-chain timestamp."
+**Visual:** open a new browser tab, paste URL. Page auto-switches to the Verify tab, runs, shows "Proof is valid" with origin type and verify time. A second panel appears showing the on-chain anchor status — either "Anchored on-chain as latest commitment" with a MinaScan link, or "Not the latest anchor" depending on whether this proof is the most recent on the registry.
+**VO:** "A verifier runs the same cryptography in their browser. Verification is under a second. The app also queries our deployed registry on Mina devnet — that's the second panel — so viewers can see whether this proof is anchored on-chain, with a live MinaScan link."
 
 ### Shot 6 — 1:12–1:30 · The primitive (optional if time-capped)
 **Visual:** cut to a terminal running `npm test` in packages/circuits, showing the 11/11 passing tests including `proveHumanWithAttestor > produces a valid proof binding wallet, attestor, and content hash`.
