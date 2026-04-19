@@ -1,7 +1,7 @@
 # Grant Proposal — zk-proof-of-origin
 
-> **Status:** Draft, submission-targeted. Refine final numbers (budget, team, video link, repo URL) before sending to Mina Builders Grants Program and/or zkIgnite Cohort 3.
-> **Last updated:** 2026-04-17
+> **Status:** Submission-ready. Final items before send: devnet zkApp address (deploy pending), demo video recording.
+> **Last updated:** 2026-04-19
 
 ## One-liner
 
@@ -29,23 +29,27 @@ The proof is the product. A ~15KB gzipped browser app wraps it: paste content �
 
 The AI-transparency branch (Phase 2) swaps the attestor witness for a zkML model-inference witness, producing the same shape of proof. Verifiers check one proof type — the witness type is the branch.
 
-## What's actually built (as of 2026-04-17)
+## What's actually built (as of 2026-04-19)
 
-This proposal is not a vision doc. The core primitive is implemented, tested, and runnable:
+This proposal is not a vision doc. The core primitive is implemented, tested, runnable, and on GitHub:
 
-- **`packages/circuits`** — `OriginProof` ZkProgram with three methods:
+- **`packages/circuits`** — `OriginProof` ZkProgram with three proof methods:
   - `proveHuman` — wallet-signature-only binding (simpler fallback).
   - `proveHumanWithAttestor` — wallet + **real in-circuit ECDSA-secp256k1 verification** of an attestor's signature, plus a Poseidon commitment over the attestor's foreign-curve pubkey.
   - `proveHumanWithReclaimAttestor` — the Reclaim-compatible mode: verifies an attestor's ECDSA-secp256k1 signature over the Reclaim keccak claim digest, then **computes `keccak256(attestorPubKey)[12:]` in-circuit** to derive the attestor's 20-byte Ethereum address and binds it to the public input. This is the axiomatic primitive: verifies a real Reclaim-shaped signed claim, entirely in circuit, against a trusted attestor address.
-  - 15/15 tests green, including forged-signature rejection. Measured on M-series Mac in Node:
-    - Compile: ~61s (one-time, cacheable)
-    - Prove (wallet-only): ~7s
-    - Prove (attested, Poseidon commitment): ~17s
-    - Prove (Reclaim-style, keccak + Ethereum address): ~18s
-    - Verify: <1s
-- **`packages/web`** — React/Vite SPA with client-side proving, Poseidon content hashing, creator flow (text → prove with staged progress bar → shareable URL via hash fragment), and verifier flow (paste URL → verify locally → display origin type). Observed real browser prove time: **~4.6s** (wallet-only) on the development machine.
-- **`docs/analysis/`** — five research documents covering: the httpz-vs-reality gap, credential-provider comparison (Reclaim vs zkPass vs ZKON vs zkEmail), a source-level audit of Reclaim's upstream, the pivot decision rationale, and empirical spike results.
-- **`DECISIONS.md`** — seven architectural decisions with rationale, consequences, and supersession chain.
+- **`ProofCommitmentRegistry` zkApp** — a real Mina SmartContract that verifies an `OriginProof` on-chain and anchors a Poseidon digest + monotonic counter + origin type. `anchor(proof)` prove time ~9.4s on local Mina. Deploy script at [packages/circuits/deploy/](../packages/circuits/deploy/) ready for Mina devnet; devnet address pending faucet payout.
+- **`packages/web`** — React/Vite SPA with client-side proving. Two proof modes selectable in the UI:
+  - **Wallet only** — ephemeral Mina keypair signs the content hash. Observed browser prove time ~4.6s on M-series Mac.
+  - **Reclaim claim** — user pastes a Reclaim-shaped JSON response (a "Load demo claim" button ships a committed fixture so reviewers can exercise the full path with zero setup). Off-circuit `ecrecover` + prepare-witness → `proveHumanWithReclaimAttestor` runs entirely in the browser.
+- **18/18 tests green** across circuits, zkApp, spikes, and off-circuit helpers. Measured on M-series Mac in Node:
+  - Compile `OriginProof`: ~61s (one-time, cacheable)
+  - Prove (wallet-only): ~5–7s
+  - Prove (attested, Poseidon commitment): ~17s
+  - Prove (Reclaim-style, keccak + Ethereum address): ~18s
+  - `anchor()` on-chain: ~9.4s
+  - Verify any mode: <1s
+- **`docs/analysis/`** — seven research documents covering: the httpz-vs-reality gap, credential-provider comparison (Reclaim vs zkPass vs ZKON vs zkEmail), a source-level audit of Reclaim's upstream, the pivot decision rationale, empirical ECDSA-spike results, composition patterns, and grant-narrative impact.
+- **`DECISIONS.md`** — seven architectural decisions (D-001 through D-007) with rationale, consequences, and supersession chain.
 
 Repository: [github.com/Kvkthecreator/zk-proof-of-origin](https://github.com/Kvkthecreator/zk-proof-of-origin). Demo video: [TBD — see §Links].
 
@@ -82,10 +86,10 @@ Costs calibrated to Mina Builders Grants range; adjust per program. Timeline ass
 | # | Deliverable | Status | Timeline | Cost (USD) |
 |---|-------------|--------|----------|------------|
 | 0 | Repo scaffold, content hashing, project decisions | ✅ Done | — | — |
-| 1 | `OriginProof` ZkProgram — wallet + ECDSA attestor verification, full test suite | ✅ Done | — | — |
-| 2 | Browser app — creator/verifier flows, client-side proving, hash-fragment share links | ✅ Done | — | — |
-| 3 | Live attestor integration — wire Reclaim browser SDK to a GitHub provider; end-to-end "verified human" proof in browser | 🔜 In progress | 2 weeks | $6,000 |
-| 4 | Testnet zkApp — minimal SmartContract storing proof commitment + timestamp; clickable devnet address | 🔜 In progress | 1 week | $3,000 |
+| 1 | `OriginProof` ZkProgram — wallet + ECDSA attestor verification (three modes), full test suite | ✅ Done | — | — |
+| 2 | Browser app — creator/verifier flows, client-side proving, hash-fragment share links, Reclaim paste-a-claim mode with demo fixture | ✅ Done | — | — |
+| 3 | Live Reclaim SDK integration — wire `@reclaimprotocol/js-sdk` with a QR/app-clip flow to a GitHub provider + minimal backend proxy for `APP_SECRET`; end-to-end "verified human" proof from real HTTPS source | 🔜 | 2 weeks | $6,000 |
+| 4 | Testnet zkApp deployment — `ProofCommitmentRegistry` (built, tested locally) deployed to Mina devnet with clickable address + MinaScan explorer link; read-only on-chain anchor status surfaced in the verifier UI | 🔜 (deploy pending faucet) | 1 week | $3,000 |
 | 5 | Demo video + landing site + public repo polish + grant submission | 🔜 | 1 week | $2,000 |
 | 6 | Contribute ECDSA verifier back to `reclaimprotocol/mina-sdk-onchain-integration` as upstream PR | Post-grant | 1 week | $2,000 |
 | 7 | zkEmail-in-o1js integration (second credential provider, attestor-free path) | Post-grant | 3 weeks | $8,000 |
@@ -127,9 +131,11 @@ The output is a standard Mina proof. Any application can verify it:
 ## Links
 
 - **Repository:** https://github.com/Kvkthecreator/zk-proof-of-origin
-- **Demo video:** [TBD — see `content/demo-script.md`]
-- **Live demo:** [TBD — after Milestone 4 testnet deploy + static hosting]
+- **Demo video:** [TBD — see [`content/demo-script.md`](../content/demo-script.md)]
+- **Live devnet zkApp address:** [TBD — populated after Milestone 4 deploy]
+- **Live demo site:** [TBD — after Milestone 4 testnet deploy + static hosting]
 - **Analysis docs:** [docs/analysis/](analysis/)
 - **Decision log:** [DECISIONS.md](../DECISIONS.md)
+- **Deploy runbook:** [packages/circuits/deploy/README.md](../packages/circuits/deploy/README.md)
 - **Mina Foundation zkOracle RFP #22 (context):** https://github.com/MinaFoundation/Core-Grants/issues/22
 - **Reclaim Mina integration (the gap we filled):** https://github.com/reclaimprotocol/mina-sdk-onchain-integration
