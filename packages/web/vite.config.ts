@@ -7,6 +7,10 @@ const crossOriginIsolationHeaders = {
 };
 
 export default defineConfig({
+  // Relative base so the build works under any URL prefix (GitHub Pages
+  // subpaths, local preview, custom CDNs). Absolute `/foo.js` links break
+  // under `/repo-name/` paths; relative `./foo.js` links work everywhere.
+  base: './',
   plugins: [react()],
   optimizeDeps: {
     exclude: ['o1js'],
