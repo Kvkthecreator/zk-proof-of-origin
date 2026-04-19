@@ -24,8 +24,8 @@ Entry point: https://minaprotocol.com/grants (subject to change — confirm URL 
 
 - [ ] Read the current application form.
 - [ ] Attach: repo URL, demo video URL, live devnet address, this grant-proposal.md (export to PDF if asked).
-- [ ] Budget field: **$11,000** for Milestones 3–5.
-- [ ] Continuation / follow-on field (if offered): note **$34,000** for Milestones 6–9.
+- [ ] Budget field: **$38,000** for Milestones 3–7 (primary ask — Live Reclaim SDK, on-chain anchor UX, demo/submission polish, upstream PR to Reclaim, zkEmail-in-o1js integration).
+- [ ] Do **not** bundle Phase 2 (AI branch via zkML) or mainnet distribution into this ask — they are explicitly out of scope and will be a separate future application. If the application form asks for future work: mention them as "separate future Builders applications, estimated $25–40K + infra costs, submitted once the human branch is production-stable."
 
 ### zkIgnite Cohort 3
 

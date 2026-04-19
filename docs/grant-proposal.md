@@ -84,22 +84,36 @@ Our upstreaming plan (post-grant, see Milestone 6): open a PR to Reclaim's repo 
 
 ## Milestones
 
-Costs calibrated to Mina Builders Grants range; adjust per program. Timeline assumes solo execution.
+Calibrated to Mina Builders Grants mid-tier awards (working applications with a real user surface) and zkIgnite Cohort 3 ranges (comparable scope to zkEmail-in-o1js at ~38,000 MINA). Timeline assumes solo execution.
 
-| # | Deliverable | Status | Timeline | Cost (USD) |
-|---|-------------|--------|----------|------------|
-| 0 | Repo scaffold, content hashing, project decisions | ✅ Done | — | — |
-| 1 | `OriginProof` ZkProgram — wallet + ECDSA attestor verification (three modes), full test suite | ✅ Done | — | — |
-| 2 | Browser app — creator/verifier flows, client-side proving, hash-fragment share links, Reclaim paste-a-claim mode with demo fixture | ✅ Done | — | — |
-| 3 | Live Reclaim SDK integration — wire `@reclaimprotocol/js-sdk` with a QR/app-clip flow to a GitHub provider + minimal backend proxy for `APP_SECRET`; end-to-end "verified human" proof from real HTTPS source | 🔜 | 2 weeks | $6,000 |
-| 4 | Testnet zkApp deployment — `ProofCommitmentRegistry` deployed to Mina devnet ([address](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs)); remaining scope: read-only on-chain anchor status surfaced in the verifier UI + first real `anchor()` call from the browser | 🔜 (deployed; UI wiring remaining) | 1 week | $3,000 |
-| 5 | Demo video + landing site + public repo polish + grant submission | 🔜 | 1 week | $2,000 |
-| 6 | Contribute ECDSA verifier back to `reclaimprotocol/mina-sdk-onchain-integration` as upstream PR | Post-grant | 1 week | $2,000 |
-| 7 | zkEmail-in-o1js integration (second credential provider, attestor-free path) | Post-grant | 3 weeks | $8,000 |
-| 8 | Phase 2 — AI branch (zkML proof of model inference bound to content hash) | Post-grant | 6 weeks | $18,000 |
-| 9 | Mainnet deployment + embed/QR + platform integrations | Post-grant | 3 weeks | $6,000 |
+### What's shipped (self-funded, not in ask)
 
-**Grant ask:** $11,000 to complete Milestones 3–5 (submission-ready MVP). **Post-grant continuation ask (separate, optional):** $34,000 for Milestones 6–9.
+| # | Deliverable | Status |
+|---|-------------|--------|
+| 0 | Repo scaffold, content hashing, architectural decisions | ✅ Done |
+| 1 | `OriginProof` ZkProgram — wallet + ECDSA attestor + Reclaim-compatible modes, 18/18 tests | ✅ Done |
+| 2 | Browser app — creator/verifier UIs, client-side proving, paste-a-Reclaim-claim mode with committed demo fixture, hash-fragment share links | ✅ Done |
+| 2a | `ProofCommitmentRegistry` zkApp — deployed to Mina devnet at [B62qpPxW...nbHgNoVU](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs) | ✅ Done |
+| 2b | Verifier UI reads live zkApp state, shows on-chain anchor status with MinaScan link | ✅ Done |
+
+### What this grant funds (primary ask: $38,000)
+
+| # | Deliverable | Timeline | Cost (USD) |
+|---|-------------|----------|------------|
+| 3 | **Live Reclaim SDK integration** — wire `@reclaimprotocol/js-sdk` with a QR/app-clip flow to real providers (GitHub, Twitter/X), plus a minimal backend proxy for `APP_SECRET`. End-to-end "verified human" proofs from real HTTPS sources, not fixtures. | 2 weeks | $12,000 |
+| 4 | **On-chain anchor submission flow** — browser-side `anchor(proof)` via Auro wallet integration so users actually write commitments to the deployed zkApp, not just read them. Closes the read/write gap in the current verifier UI. | 1.5 weeks | $7,000 |
+| 5 | **Demo video, landing site, repo polish, submission materials** — GitHub Pages auto-deploy with COOP/COEP shim (already scaffolded), 60–90s demo video, README polish, example integrations. | 1 week | $3,000 |
+| 6 | **Public-goods upstream contribution** — open a PR to [reclaimprotocol/mina-sdk-onchain-integration](https://github.com/reclaimprotocol/mina-sdk-onchain-integration) contributing our in-circuit ECDSA-secp256k1 verifier + documented test vectors. Includes a third-party security review pass on the verifier before PR. | 2 weeks | $6,000 |
+| 7 | **zkEmail-in-o1js integration** — second credential provider with DKIM-rooted trust (no external attestor), gives users a choice between broad HTTPS coverage (Reclaim) and attestor-free email verification. Honors the "post-grant upgrade path" disclosed in the trust-model section. | 3 weeks | $10,000 |
+
+**Primary ask: $38,000 for Milestones 3–7 (~10 weeks solo FTE).** This covers 60–65% of blended-rate opportunity cost and produces (a) a deployed public demo, (b) a primitive contributed back to Mina's funded Reclaim stack as a public good, and (c) two operational credential provider backends.
+
+### Explicitly out of scope for this application
+
+- **Phase 2 — AI-generated content branch (zkML proof of model inference bound to content hash).** This is a meaningful follow-on that deserves its own focused application once the human branch is production-stable and zkML tooling on Mina has matured. Scope estimate ~6 weeks, ~$25–40K, to be submitted as a separate Builders application.
+- **Mainnet deployment + distribution (browser extension, embed code, platform integrations).** Follows Phase 2; separate scope.
+
+We flag these to show we've thought about the long game, not to bundle them into this ask. Reviewers who prefer focused applications get one.
 
 ## Differentiation
 
