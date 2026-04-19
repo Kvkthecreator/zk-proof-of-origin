@@ -21,7 +21,8 @@ type VerifyState =
 
 function originTypeLabel(originType: string): string {
   if (originType === '0') return 'Human (wallet-bound)';
-  if (originType === '2') return 'Human (attestor-verified)';
+  if (originType === '2') return 'Human (attestor-verified, Poseidon)';
+  if (originType === '3') return 'Human (Reclaim attestor, Ethereum-bound)';
   if (originType === '1') return 'AI-generated';
   return `Unknown (${originType})`;
 }
