@@ -4,17 +4,11 @@ Final-step checklist for sending the grant applications. Ordered so nothing bloc
 
 ## Pre-submission gates (do in order)
 
-- [ ] **Devnet faucet confirms payout** to deployer `B62qntwPTcYk99wtEXyAJMyP3R2BCtU67daiKx51XVxcC82Y81Nudrk`.
-  - Check via MinaScan: https://minascan.io/devnet/account/B62qntwPTcYk99wtEXyAJMyP3R2BCtU67daiKx51XVxcC82Y81Nudrk
-  - Or via GraphQL: `curl -s -X POST https://api.minascan.io/node/devnet/v1/graphql -H 'Content-Type: application/json' -d '{"query":"{account(publicKey:\"B62qntwPTcYk99wtEXyAJMyP3R2BCtU67daiKx51XVxcC82Y81Nudrk\"){balance{total}}}"}'`
-- [ ] **Deploy `ProofCommitmentRegistry` to Mina devnet.**
-  ```bash
-  cd packages/circuits
-  set -a && source .env && set +a
-  npx tsx deploy/deploy-devnet.ts
-  ```
-  Capture: zkApp address, tx hash, MinaScan explorer link.
-- [ ] **Populate `grant-proposal.md` Links section** with the live zkApp address.
+- [x] **Devnet faucet confirms payout** to deployer `B62qntwPTcYk99wtEXyAJMyP3R2BCtU67daiKx51XVxcC82Y81Nudrk` — 299 MINA received 2026-04-20.
+- [x] **`ProofCommitmentRegistry` deployed to Mina devnet.**
+  - zkApp: [`B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU`](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs)
+  - Deploy tx: [`5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc`](https://minascan.io/devnet/tx/5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc)
+- [x] **`grant-proposal.md` Links section** populated with live zkApp address.
 - [ ] **Record demo video** per [`content/demo-script.md`](../content/demo-script.md). Target 60–90s. Upload unlisted to YouTube. Paste URL into proposal.
 - [ ] **Final repo polish pass:**
   - [ ] Ensure `main` is green (`npm test` in `packages/circuits/`).

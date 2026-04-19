@@ -19,7 +19,7 @@ This is the axiomatic primitive any Mina application wanting to consume Reclaim/
 | `OriginProof` ZkProgram | 3 proof methods: wallet-only, wallet+attestor (Poseidon-committed), wallet+Reclaim-attestor (Ethereum-address-bound) | [`packages/circuits/src/OriginProof.ts`](packages/circuits/src/OriginProof.ts) |
 | ECDSA + keccak primitives | Secp256k1, EcdsaSecp256k1, AttestorDigest, in-circuit keccak-of-pubkey | [`packages/circuits/src/ecdsa.ts`](packages/circuits/src/ecdsa.ts) |
 | Off-circuit Reclaim helpers | keccak digest, 65-byte sig parser, pure-JS ecrecover, prover-bundle builder | [`packages/circuits/src/reclaimClaim.ts`](packages/circuits/src/reclaimClaim.ts) |
-| `ProofCommitmentRegistry` zkApp | Verifies an OriginProof on-chain, anchors a Poseidon digest + counter | [`packages/circuits/src/ProofCommitmentRegistry.ts`](packages/circuits/src/ProofCommitmentRegistry.ts) |
+| `ProofCommitmentRegistry` zkApp | Verifies an OriginProof on-chain, anchors a Poseidon digest + counter. Live on Mina devnet: [`B62qpPxW…nbHgNoVU`](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs) | [`packages/circuits/src/ProofCommitmentRegistry.ts`](packages/circuits/src/ProofCommitmentRegistry.ts) |
 | Browser UI | Two modes (wallet-only and paste-a-Reclaim-claim), in-browser proving, shareable-URL verification | [`packages/web/`](packages/web/) |
 | Demo fixture | A Reclaim-shaped claim signed by a committed demo key | [`packages/circuits/fixtures/demo-reclaim-claim.json`](packages/circuits/fixtures/demo-reclaim-claim.json) |
 
