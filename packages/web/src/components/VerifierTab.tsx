@@ -5,6 +5,12 @@ import {
   readProofFromLocation,
 } from '../proofEncoding';
 import { verifyOriginProof } from '../prover';
+import {
+  DEPLOYED_ZKAPP_ADDRESS,
+  checkIsLatestAnchor,
+  explorerAccountUrl,
+  type AnchorLookupResult,
+} from '../onchainAnchor';
 
 type VerifyState =
   | { kind: 'idle' }
@@ -18,6 +24,11 @@ type VerifyState =
       verifyTimeMs: number;
     }
   | { kind: 'error'; message: string };
+
+type AnchorState =
+  | { kind: 'idle' }
+  | { kind: 'loading' }
+  | { kind: 'resolved'; result: AnchorLookupResult };
 
 function originTypeLabel(originType: string): string {
   if (originType === '0') return 'Human (wallet-bound)';
@@ -34,6 +45,7 @@ export function VerifierTab({
 }) {
   const [encoded, setEncoded] = useState(initialEncoded ?? '');
   const [state, setState] = useState<VerifyState>({ kind: 'idle' });
+  const [anchor, setAnchor] = useState<AnchorState>({ kind: 'idle' });
 
   useEffect(() => {
     if (initialEncoded) {
@@ -44,6 +56,7 @@ export function VerifierTab({
 
   async function runVerify(value: string) {
     setState({ kind: 'loading', message: 'Decoding proof' });
+    setAnchor({ kind: 'idle' });
     try {
       const serialized = decodeProofFromString(value);
       setState({
@@ -57,6 +70,26 @@ export function VerifierTab({
         url.search = '';
         url.hash = `${PROOF_URL_PARAM}=${value}`;
         window.history.replaceState({}, '', url.toString());
+      }
+      if (r.valid) {
+        setAnchor({ kind: 'loading' });
+        try {
+          const result = await checkIsLatestAnchor({
+            contentHash: r.contentHash,
+            credentialCommitment: r.credentialCommitment,
+            originType: r.originType,
+          });
+          setAnchor({ kind: 'resolved', result });
+        } catch (e) {
+          setAnchor({
+            kind: 'resolved',
+            result: {
+              kind: 'registry-offline',
+              message:
+                e instanceof Error ? e.message : String(e),
+            },
+          });
+        }
       }
     } catch (e) {
       setState({
@@ -145,6 +178,95 @@ export function VerifierTab({
           </div>
         </div>
       )}
+
+      {state.kind === 'ok' && state.valid && (
+        <OnchainAnchorPanel anchor={anchor} />
+      )}
+    </div>
+  );
+}
+
+function OnchainAnchorPanel({ anchor }: { anchor: AnchorState }) {
+  return (
+    <div className="panel">
+      <div className="label">On-chain anchor (Mina devnet)</div>
+      {anchor.kind === 'idle' && (
+        <div className="muted">Not yet checked.</div>
+      )}
+      {anchor.kind === 'loading' && (
+        <div className="status">
+          <span className="dot" />
+          <span>Querying {DEPLOYED_ZKAPP_ADDRESS.slice(0, 12)}… on Mina devnet</span>
+        </div>
+      )}
+      {anchor.kind === 'resolved' &&
+        anchor.result.kind === 'anchored-latest' && (
+          <>
+            <div className="status ok">
+              <span className="dot" />
+              <span>
+                Anchored on-chain as the latest commitment (sequence{' '}
+                {anchor.result.sequence.toString()})
+              </span>
+            </div>
+            <div className="hint">
+              The ProofCommitmentRegistry zkApp on Mina devnet holds a
+              Poseidon digest that matches this proof's public inputs.{' '}
+              <a
+                href={explorerAccountUrl()}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on MinaScan →
+              </a>
+            </div>
+          </>
+        )}
+      {anchor.kind === 'resolved' &&
+        anchor.result.kind === 'not-latest' && (
+          <>
+            <div className="status">
+              <span className="dot" />
+              <span>
+                Not the latest on-chain anchor (registry has{' '}
+                {anchor.result.proofCount.toString()} total anchors; this
+                proof may have been superseded or never submitted)
+              </span>
+            </div>
+            <div className="hint">
+              The registry currently holds digest{' '}
+              <code className="mono">
+                {anchor.result.onchainDigest.toString().slice(0, 18)}…
+              </code>{' '}
+              which does not match this proof's computed digest. Historical
+              anchor scanning is a Milestone 6+ feature. For now, anyone can
+              call <code>anchor(proof)</code> on the zkApp to make this proof
+              the latest.{' '}
+              <a
+                href={explorerAccountUrl()}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on MinaScan →
+              </a>
+            </div>
+          </>
+        )}
+      {anchor.kind === 'resolved' &&
+        anchor.result.kind === 'registry-offline' && (
+          <>
+            <div className="status err">
+              <span className="dot" />
+              <span>
+                Could not reach the devnet registry: {anchor.result.message}
+              </span>
+            </div>
+            <div className="hint">
+              The local proof is still valid — on-chain anchoring is an
+              optional layer, not required for verification.
+            </div>
+          </>
+        )}
     </div>
   );
 }

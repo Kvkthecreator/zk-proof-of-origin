@@ -3,7 +3,11 @@
   "compilerOptions": {
     "outDir": "dist",
     "jsx": "react-jsx",
-    "noEmit": true
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": false,
+    "types": ["vite/client"]
   },
   "include": ["src/**/*"]
 }
