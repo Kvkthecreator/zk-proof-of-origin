@@ -109,8 +109,35 @@ async function main() {
   await tx.prove();
 
   // eslint-disable-next-line no-console
-  console.log('[deploy] signing & sending...');
-  const pending = await tx.sign([deployerKey, zkAppKey]).send();
+  console.log('[deploy] signing & sending via raw GraphQL (o1js send() wraps spurious 500s from the minascan proxy as hard failures even when the tx landed; raw call is more honest)...');
+  const signed = tx.sign([deployerKey, zkAppKey]);
+  const txJson = signed.toJSON();
+
+  const raw = await fetch(GRAPHQL_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query:
+        'mutation($input: SendZkappInput!){ sendZkapp(input: $input){ zkapp{ hash } } }',
+      variables: { input: { zkappCommand: JSON.parse(txJson) } },
+    }),
+  });
+  const rawBody = await raw.text();
+  let parsed: { data?: { sendZkapp?: { zkapp?: { hash?: string } } }; errors?: unknown };
+  try {
+    parsed = JSON.parse(rawBody);
+  } catch {
+    throw new Error(
+      `GraphQL returned non-JSON body (status ${raw.status}): ${rawBody.slice(0, 300)}`
+    );
+  }
+  const txHash = parsed.data?.sendZkapp?.zkapp?.hash;
+  if (!txHash) {
+    throw new Error(
+      `GraphQL rejected the tx (status ${raw.status}): ${JSON.stringify(parsed).slice(0, 500)}`
+    );
+  }
+  const pending = { hash: txHash };
 
   // eslint-disable-next-line no-console
   console.log(`\n[deploy] zkApp address: ${zkAppAddr.toBase58()}`);
@@ -128,9 +155,42 @@ async function main() {
   console.log(
     '\n[deploy] waiting for tx to be included (may take 2-5 minutes)...'
   );
-  await pending.wait();
+  await waitForInclusion(zkAppAddr.toBase58());
   // eslint-disable-next-line no-console
-  console.log('[deploy] included.');
+  console.log('[deploy] included. zkApp account now exists on devnet.');
+}
+
+async function waitForInclusion(zkAppBase58: string): Promise<void> {
+  const startedAt = Date.now();
+  const maxMs = 10 * 60 * 1000;
+  let lastLog = 0;
+  while (Date.now() - startedAt < maxMs) {
+    const resp = await fetch(GRAPHQL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `{account(publicKey:"${zkAppBase58}"){balance{total}}}`,
+      }),
+    });
+    try {
+      const json = (await resp.json()) as {
+        data?: { account?: { balance?: { total?: string } } };
+      };
+      if (json.data?.account?.balance?.total) return;
+    } catch {
+      // ignore JSON parse noise
+    }
+    if (Date.now() - lastLog > 30_000) {
+      const secs = Math.floor((Date.now() - startedAt) / 1000);
+      // eslint-disable-next-line no-console
+      console.log(`[deploy] still waiting for inclusion... (${secs}s elapsed)`);
+      lastLog = Date.now();
+    }
+    await new Promise((r) => setTimeout(r, 5000));
+  }
+  throw new Error(
+    `zkApp account did not appear on devnet within ${maxMs / 1000}s — check MinaScan manually`
+  );
 }
 
 void main().catch((e) => {

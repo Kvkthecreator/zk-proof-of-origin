@@ -19,6 +19,7 @@
     "o1js": "^2.2.0"
   },
   "devDependencies": {
+    "@swc-node/register": "^1.11.1",
     "@swc/core": "^1.15.26",
     "typescript": "^5.7.0",
     "unplugin-swc": "^1.5.9",
