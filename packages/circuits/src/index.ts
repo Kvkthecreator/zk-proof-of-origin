@@ -37,3 +37,7 @@ export {
   recoverSecp256k1PubKey,
   type ReclaimClaim,
 } from './reclaimClaim.js';
+export {
+  AnchorRecord,
+  ProofCommitmentRegistry,
+} from './ProofCommitmentRegistry.js';
