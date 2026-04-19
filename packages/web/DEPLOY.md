@@ -6,10 +6,12 @@ The web app is a pure static bundle — `npm run build` produces `packages/web/d
 
 A GitHub Actions workflow at [`.github/workflows/deploy-pages.yml`](../../.github/workflows/deploy-pages.yml) auto-builds and deploys on every push to `main`. To enable:
 
+**One-time setup** (required the first time only — GitHub's default workflow token can't auto-enable Pages):
+
 1. In the GitHub repo, go to **Settings → Pages**.
 2. Under "Build and deployment," set **Source** to **GitHub Actions**.
-3. Push (or re-run the workflow from the Actions tab).
-4. After the first run, the live URL is `https://<user>.github.io/zk-proof-of-origin/`.
+3. Go to the **Actions** tab and re-run the most recent "Deploy web to GitHub Pages" workflow (or push any commit).
+4. After the first successful run, the live URL is `https://<user>.github.io/zk-proof-of-origin/` and subsequent pushes auto-deploy.
 
 GitHub Pages can't set custom HTTP headers, so we use [`coi-serviceworker`](https://github.com/gzuidhof/coi-serviceworker) to simulate COOP/COEP via a service worker (already installed + wired into `index.html`). The page reloads once on first visit to register the worker, then o1js works normally.
 

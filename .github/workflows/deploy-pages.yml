@@ -32,9 +32,12 @@ jobs:
         working-directory: packages/web
         run: npm run build
 
+      # Requires one-time manual enable in repo Settings → Pages →
+      # Source: GitHub Actions. The default GITHUB_TOKEN cannot create
+      # a Pages site (even with pages:write) — only a PAT with admin
+      # repo rights can, and adding a PAT as a secret is more ceremony
+      # than a single click in Settings.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
