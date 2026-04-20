@@ -10,12 +10,8 @@ Final-step checklist for sending the grant applications. Ordered so nothing bloc
   - Deploy tx: [`5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc`](https://minascan.io/devnet/tx/5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc)
 - [x] **`grant-proposal.md` Links section** populated with live zkApp address.
 - [x] **GitHub Pages live** at https://kvkthecreator.github.io/zk-proof-of-origin/ — auto-deploys on every push to `main` via [.github/workflows/deploy-pages.yml](../.github/workflows/deploy-pages.yml).
-- [ ] **Record demo video** per [`content/demo-script.md`](../content/demo-script.md). Target 60–90s. Upload unlisted to YouTube. Paste URL into proposal.
-- [ ] **Final repo polish pass:**
-  - [ ] Ensure `main` is green (`npm test` in `packages/circuits/`).
-  - [ ] Ensure `packages/web && npm run build` succeeds.
-  - [ ] Skim README, grant-proposal, DECISIONS for any remaining `TBD`.
-  - [ ] Verify all `[label](path)` links resolve on GitHub.
+- [x] **Application submitted** via Typeform on 2026-04-20. Confirmation page: "Thanks for filling in the application! Our team will get back to you within 30 days." Decision window: by **2026-05-20**.
+- [ ] **Record demo video** per [`content/demo-script.md`](../content/demo-script.md) + [`content/demo-transcript.md`](../content/demo-transcript.md). The Typeform did not require a video — this is now a *post-submission credibility signal* for Discord / X outreach rather than a submission requirement. Still high-leverage; recommended to record within the 30-day review window.
 
 ## Application mechanics
 
@@ -43,10 +39,16 @@ Pre-submission fill-in:
 
 ## After submission
 
-- [ ] Post the submission publicly (X, LinkedIn, relevant Discord). Brief note + video. The Builder Grants program explicitly asks for public progress updates, so start the habit early.
-- [ ] Reach out to Mina Foundation contacts directly if you have any warm intros.
-- [ ] Keep working on Milestone 6 (upstream PR to Reclaim Mina repo) in parallel — lands as a concrete demonstrator of execution velocity while the 30-day review runs.
-- [ ] If no reply by day 35: polite nudge to the Grants contact email (see program page).
+**Current status:** submitted 2026-04-20. Decision expected by 2026-05-20.
+
+During the 30-day review window, keep these moving:
+
+- [ ] **Join Mina Discord** (confirmation page explicitly requested). Match handle to GitHub so reviewers can connect the dots.
+- [ ] **Follow @MinaProtocol on X.** Post a short "just applied to Builders Grants — here's what we built" note with the live demo URL and zkApp address. Tag @MinaProtocol.
+- [ ] **Record + share the demo video** (transcript + shot list already in [`content/`](../content/)). Unlisted YouTube → paste URL into both proposal Links and the public-outreach post.
+- [ ] **Start Milestone 6 in parallel** — the upstream PR to `reclaimprotocol/mina-sdk-onchain-integration`. This is the single most visible "shipping regardless of funding" signal we can send during the review window. Recommended: open a draft PR early so reviewers can see it in motion.
+- [ ] **Reach out to Mina Foundation contacts** directly if any warm intros exist.
+- [ ] **Day-35 nudge:** if no reply, polite email to the Grants contact listed on the program page.
 
 ## If blocked
 
