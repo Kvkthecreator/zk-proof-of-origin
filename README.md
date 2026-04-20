@@ -76,6 +76,8 @@ cd packages/web && npm run dev
 
 The web app ships with a "Load demo claim" button that lets you generate a full Reclaim-mode proof in the browser without any external setup.
 
+**Or try it hosted:** https://kvkthecreator.github.io/zk-proof-of-origin/
+
 ## Grant targeting
 
 Targeting [Mina Builders Grants Program](https://minaprotocol.com/grants) and [zkIgnite Cohort 3](https://minaprotocol.com/zkignite). See [docs/grant-proposal.md](docs/grant-proposal.md) for the submission-ready proposal.

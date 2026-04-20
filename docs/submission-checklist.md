@@ -9,6 +9,7 @@ Final-step checklist for sending the grant applications. Ordered so nothing bloc
   - zkApp: [`B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU`](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs)
   - Deploy tx: [`5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc`](https://minascan.io/devnet/tx/5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc)
 - [x] **`grant-proposal.md` Links section** populated with live zkApp address.
+- [x] **GitHub Pages live** at https://kvkthecreator.github.io/zk-proof-of-origin/ — auto-deploys on every push to `main` via [.github/workflows/deploy-pages.yml](../.github/workflows/deploy-pages.yml).
 - [ ] **Record demo video** per [`content/demo-script.md`](../content/demo-script.md). Target 60–90s. Upload unlisted to YouTube. Paste URL into proposal.
 - [ ] **Final repo polish pass:**
   - [ ] Ensure `main` is green (`npm test` in `packages/circuits/`).

@@ -150,7 +150,7 @@ The output is a standard Mina proof. Any application can verify it:
 - **Repository:** https://github.com/Kvkthecreator/zk-proof-of-origin
 - **Demo video:** [TBD — see [`content/demo-script.md`](../content/demo-script.md)]
 - **Live devnet zkApp:** [`B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU`](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs) — deploy tx [`5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc`](https://minascan.io/devnet/tx/5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc)
-- **Live demo site:** [TBD — after Milestone 5 static hosting]
+- **Live demo site:** https://kvkthecreator.github.io/zk-proof-of-origin/ (in-browser proof generation + verification, points at the live devnet zkApp)
 - **Analysis docs:** [docs/analysis/](analysis/)
 - **Decision log:** [DECISIONS.md](../DECISIONS.md)
 - **Deploy runbook:** [packages/circuits/deploy/README.md](../packages/circuits/deploy/README.md)
