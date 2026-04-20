@@ -1,6 +1,7 @@
 # Grant Proposal — zk-proof-of-origin
 
 > **Status:** Submission-ready. Final items before send: demo video recording.
+> **Target program:** [Mina Builder Grants](https://minaprotocol.com/builder-grants-program) (rolling applications, 30-day decisions, $5K–$30K range).
 > **Last updated:** 2026-04-20
 
 ## One-liner
@@ -84,7 +85,7 @@ Our upstreaming plan (post-grant, see Milestone 6): open a PR to Reclaim's repo 
 
 ## Milestones
 
-Calibrated to Mina Builders Grants mid-tier awards (working applications with a real user surface) and zkIgnite Cohort 3 ranges (comparable scope to zkEmail-in-o1js at ~38,000 MINA). Timeline assumes solo execution.
+Calibrated to the Mina Builder Grants band ($5K–$30K) with headroom for reviewer judgment. Timeline assumes solo execution.
 
 ### What's shipped (self-funded, not in ask)
 
@@ -95,25 +96,28 @@ Calibrated to Mina Builders Grants mid-tier awards (working applications with a 
 | 2 | Browser app — creator/verifier UIs, client-side proving, paste-a-Reclaim-claim mode with committed demo fixture, hash-fragment share links | ✅ Done |
 | 2a | `ProofCommitmentRegistry` zkApp — deployed to Mina devnet at [B62qpPxW...nbHgNoVU](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs) | ✅ Done |
 | 2b | Verifier UI reads live zkApp state, shows on-chain anchor status with MinaScan link | ✅ Done |
+| 2c | GitHub Pages auto-deploy with COOP/COEP service-worker shim; live demo at [kvkthecreator.github.io/zk-proof-of-origin](https://kvkthecreator.github.io/zk-proof-of-origin/) | ✅ Done |
 
-### What this grant funds (primary ask: $38,000)
+### What this grant funds (primary ask: $25,000)
 
 | # | Deliverable | Timeline | Cost (USD) |
 |---|-------------|----------|------------|
-| 3 | **Live Reclaim SDK integration** — wire `@reclaimprotocol/js-sdk` with a QR/app-clip flow to real providers (GitHub, Twitter/X), plus a minimal backend proxy for `APP_SECRET`. End-to-end "verified human" proofs from real HTTPS sources, not fixtures. | 2 weeks | $12,000 |
-| 4 | **On-chain anchor submission flow** — browser-side `anchor(proof)` via Auro wallet integration so users actually write commitments to the deployed zkApp, not just read them. Closes the read/write gap in the current verifier UI. | 1.5 weeks | $7,000 |
-| 5 | **Demo video, landing site, repo polish, submission materials** — GitHub Pages auto-deploy with COOP/COEP shim (already scaffolded), 60–90s demo video, README polish, example integrations. | 1 week | $3,000 |
+| 3 | **Live Reclaim SDK integration** — wire `@reclaimprotocol/js-sdk` with a QR/app-clip flow to real providers (GitHub, Twitter/X), plus a minimal backend proxy for `APP_SECRET`. End-to-end "verified human" proofs from real HTTPS sources, not fixtures. | 2 weeks | $10,000 |
+| 4 | **On-chain anchor submission flow** — browser-side `anchor(proof)` via Auro wallet integration so users actually write commitments to the deployed zkApp, not just read them. Closes the read/write gap in the current verifier UI. | 1.5 weeks | $6,000 |
+| 5 | **Demo, landing site polish, submission materials, community outreach** — 60–90s demo video, README and docs polish, example integrations, blog post + community-call walkthrough per program expectations. | 1 week | $3,000 |
 | 6 | **Public-goods upstream contribution** — open a PR to [reclaimprotocol/mina-sdk-onchain-integration](https://github.com/reclaimprotocol/mina-sdk-onchain-integration) contributing our in-circuit ECDSA-secp256k1 verifier + documented test vectors. Includes a third-party security review pass on the verifier before PR. | 2 weeks | $6,000 |
-| 7 | **zkEmail-in-o1js integration** — second credential provider with DKIM-rooted trust (no external attestor), gives users a choice between broad HTTPS coverage (Reclaim) and attestor-free email verification. Honors the "post-grant upgrade path" disclosed in the trust-model section. | 3 weeks | $10,000 |
 
-**Primary ask: $38,000 for Milestones 3–7 (~10 weeks solo FTE).** This covers 60–65% of blended-rate opportunity cost and produces (a) a deployed public demo, (b) a primitive contributed back to Mina's funded Reclaim stack as a public good, and (c) two operational credential provider backends.
+**Primary ask: $25,000 for Milestones 3–6 (~6.5 weeks solo FTE).** Fits cleanly inside the Builder Grants band with headroom. Delivers (a) a live end-to-end "verified human" proof flow against a real HTTPS source, (b) an on-chain write path so the deployed zkApp gets used rather than just read, (c) a public good contributed back to Mina's own funded Reclaim stack.
 
-### Explicitly out of scope for this application
+### Explicit follow-on (not in this ask)
 
-- **Phase 2 — AI-generated content branch (zkML proof of model inference bound to content hash).** This is a meaningful follow-on that deserves its own focused application once the human branch is production-stable and zkML tooling on Mina has matured. Scope estimate ~6 weeks, ~$25–40K, to be submitted as a separate Builders application.
-- **Mainnet deployment + distribution (browser extension, embed code, platform integrations).** Follows Phase 2; separate scope.
+Three chunks of follow-on work, each a natural standalone Builder Grants application after M3–M6 lands:
 
-We flag these to show we've thought about the long game, not to bundle them into this ask. Reviewers who prefer focused applications get one.
+- **zkEmail-in-o1js integration** (~3 weeks, ~$10K) — second credential provider with DKIM-rooted trust (no external attestor), giving users a choice between broad HTTPS coverage via Reclaim and attestor-free email verification. Honors the "post-grant upgrade path" in our trust-model disclosure.
+- **AI-generated content branch via zkML** (~6 weeks, ~$20–30K) — Phase 2 of the thesis. Best submitted after the human branch is production-stable and zkML tooling on Mina has matured.
+- **Mainnet deployment + distribution** (~3 weeks, ~$8K) — browser extension, embed code, platform integration docs. Ships after the above.
+
+We flag these to show a credible long-term plan, not to bundle them. Each lands as a separate focused Builder Grants application.
 
 ## Differentiation
 

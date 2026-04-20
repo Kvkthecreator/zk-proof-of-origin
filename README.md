@@ -80,9 +80,9 @@ The web app ships with a "Load demo claim" button that lets you generate a full 
 
 ## Grant targeting
 
-Targeting [Mina Builders Grants Program](https://minaprotocol.com/grants) and [zkIgnite Cohort 3](https://minaprotocol.com/zkignite). See [docs/grant-proposal.md](docs/grant-proposal.md) for the submission-ready proposal.
+Targeting the [Mina Builder Grants Program](https://minaprotocol.com/builder-grants-program) — rolling applications, 30-day decisions, $5K–$30K tier for teams with working zkApps and a credible adoption story. See [docs/grant-proposal.md](docs/grant-proposal.md) for the submission-ready proposal.
 
-**Ask:** $38,000 for Milestones 3–7: live Reclaim SDK wire-up (M3), on-chain anchor submission flow via Auro wallet (M4), demo video + landing site + submission polish (M5), upstream contribution of our ECDSA primitive back to Reclaim's repo (M6), and zkEmail-in-o1js integration as an attestor-free credential path (M7). The AI-branch via zkML and mainnet distribution are explicitly out of scope for this application and will be submitted separately.
+**Ask:** $25,000 for Milestones 3–6: live Reclaim SDK wire-up (M3), on-chain anchor submission flow via Auro wallet (M4), demo video + docs + community outreach (M5), and upstream contribution of our in-circuit ECDSA primitive back to Reclaim's Mina repo (M6). Follow-on work — zkEmail integration, AI branch via zkML, mainnet distribution — is explicitly out of scope and ships as separate Builder Grant applications after M3–M6 delivers.
 
 ## License
 

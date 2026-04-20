@@ -19,28 +19,34 @@ Final-step checklist for sending the grant applications. Ordered so nothing bloc
 
 ## Application mechanics
 
-### Mina Builders Grants Program
+### Mina Builder Grants Program (primary target)
 
-Entry point: https://minaprotocol.com/grants (subject to change — confirm URL at submission time).
+- Program page: https://minaprotocol.com/builder-grants-program
+- Application form (Typeform): **https://5bi2nn1mxxj.typeform.com/to/rXo2gX1B**
+- Funding band: $5K–$30K (Builder Grants tier). Exploration Grants ($1K–$5K) are for prototypes; we are past that. $100K+ Partnerships & Investments are bespoke, not applicable here.
+- Basis: rolling applications, ~30-day decisions. No cohort window to race.
+- Post-award expectations (per program page): share progress publicly via blog posts, demos, and community calls; funding is tied to development milestones and user adoption.
 
-- [ ] Read the current application form.
-- [ ] Attach: repo URL, demo video URL, live devnet address, this grant-proposal.md (export to PDF if asked).
-- [ ] Budget field: **$38,000** for Milestones 3–7 (primary ask — Live Reclaim SDK, on-chain anchor UX, demo/submission polish, upstream PR to Reclaim, zkEmail-in-o1js integration).
-- [ ] Do **not** bundle Phase 2 (AI branch via zkML) or mainnet distribution into this ask — they are explicitly out of scope and will be a separate future application. If the application form asks for future work: mention them as "separate future Builders applications, estimated $25–40K + infra costs, submitted once the human branch is production-stable."
+Pre-submission fill-in:
 
-### zkIgnite Cohort 3
+- [ ] Read the current Typeform end-to-end before typing any answer. Fields can change.
+- [ ] Core links ready: repo URL (`https://github.com/Kvkthecreator/zk-proof-of-origin`), live demo (`https://kvkthecreator.github.io/zk-proof-of-origin/`), zkApp devnet address (`B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU`), demo video URL (YouTube unlisted).
+- [ ] Budget field: **$25,000** for Milestones 3–6 (Live Reclaim SDK, on-chain anchor UX via Auro, demo + community outreach, upstream PR to Reclaim).
+- [ ] Milestone breakdown if asked: pull directly from [grant-proposal.md](grant-proposal.md) §Milestones.
+- [ ] Follow-on disclosure if asked: zkEmail integration, zkML AI branch, mainnet + distribution are separate future Builder Grant applications to be submitted after M3–M6 delivers.
 
-Entry point: https://zkignite.minaprotocol.com (subject to change — confirm URL).
+### zkIgnite Cohort 4
 
-- [ ] Cohort 3 application window — verify still open at submission time.
-- [ ] Cohort-specific template: use the same material, restructured to the cohort's requested sections.
-- [ ] Budget tier: match to zkIgnite's funding brackets.
+- **Status as of 2026-04-20:** not open. Cohort 3 closed; Cohort 4 referenced in community/news sources as "Q2 2026" but no active application URL exists.
+- If Cohort 4 opens during our submission window, re-run the ask through their form with the same content, restructured into their sections. Until it opens, **Builder Grants is the sole target**.
+- Notification signup (for awareness): [https://minaprotocol.com/join-zkignite-cohort-3](https://minaprotocol.com/join-zkignite-cohort-3) (old cohort page; useful as a weak signal for updates).
 
 ## After submission
 
-- [ ] Post the submission publicly (X, LinkedIn, relevant Discord). Brief note + video.
+- [ ] Post the submission publicly (X, LinkedIn, relevant Discord). Brief note + video. The Builder Grants program explicitly asks for public progress updates, so start the habit early.
 - [ ] Reach out to Mina Foundation contacts directly if you have any warm intros.
-- [ ] Keep working on Milestone 6 (upstream PR to Reclaim Mina repo) in parallel — lands as a concrete demonstrator of post-grant intent.
+- [ ] Keep working on Milestone 6 (upstream PR to Reclaim Mina repo) in parallel — lands as a concrete demonstrator of execution velocity while the 30-day review runs.
+- [ ] If no reply by day 35: polite nudge to the Grants contact email (see program page).
 
 ## If blocked
 
