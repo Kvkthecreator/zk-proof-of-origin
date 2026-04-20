@@ -30,6 +30,9 @@ export default defineConfig({
         transform: {
           legacyDecorator: true,
           decoratorMetadata: true,
+          react: {
+            runtime: 'automatic',
+          },
         },
         keepClassNames: true,
       },
