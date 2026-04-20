@@ -27,3 +27,7 @@ packages/circuits/build/
 
 # Demo video raw takes (keep the script, not the takes)
 content/demo-raw/
+
+# Local one-off keygen utility — prints fresh keys each run; not meant
+# to be committed. Use packages/circuits/deploy/ scripts for real flows.
+/gen-keys.mjs
