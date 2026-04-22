@@ -5,6 +5,7 @@ import {
   OriginPublicInput,
 } from '@zk-proof-of-origin/circuits';
 import { Poseidon, PrivateKey, Signature } from 'o1js';
+import { idbCache, warmCircuitCache } from './idbCache';
 
 export type ProveProgress =
   | { stage: 'compiling' }
@@ -33,9 +34,14 @@ async function ensureCompiled(
     return;
   }
   onProgress({ stage: 'compiling' });
-  compilePromise = OriginProof.compile().then(() => {
+  compilePromise = (async () => {
+    // Warm the IDB-backed cache before compile so a returning visitor
+    // skips the prover-key generation entirely. First-ever visit still
+    // pays the full compile cost; subsequent visits are seconds.
+    await warmCircuitCache();
+    await OriginProof.compile({ cache: idbCache });
     compiled = true;
-  });
+  })();
   await compilePromise;
 }
 
