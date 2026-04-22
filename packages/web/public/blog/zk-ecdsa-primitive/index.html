@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Building the Primitive Mina's Funded Reclaim Integration Was Missing</title>
+  <meta name="description" content="An in-circuit ECDSA-secp256k1 attestor verifier for Mina, why we built it, and how to use it." />
+  <meta property="og:title" content="Building the Primitive Mina's Funded Reclaim Integration Was Missing" />
+  <meta property="og:description" content="An in-circuit ECDSA-secp256k1 attestor verifier for Mina, why we built it, and how to use it." />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Building the Primitive Mina's Funded Reclaim Integration Was Missing" />
+  <meta name="twitter:description" content="An in-circuit ECDSA-secp256k1 attestor verifier for Mina." />
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)" />
+
+  <style>
+    :root {
+      --bg: #fdfdfc;
+      --fg: #1a1a1a;
+      --muted: #666;
+      --accent: #2563eb;
+      --border: #e5e5e5;
+      --code-bg: #f6f8fa;
+      --quote: #4a5568;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1115;
+        --fg: #e4e4e7;
+        --muted: #9ca3af;
+        --accent: #60a5fa;
+        --border: #27272a;
+        --code-bg: #161b22;
+        --quote: #a1a1aa;
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    nav {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    nav a:hover { color: var(--accent); }
+
+    article {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      line-height: 1.25;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 1rem;
+      margin: 0 0 8px;
+    }
+
+    .byline {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0 0 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 48px 0 16px;
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 32px 0 12px;
+    }
+
+    p {
+      margin: 0 0 20px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    a:hover { text-decoration-thickness: 2px; }
+
+    strong { font-weight: 600; }
+
+    code {
+      font-family: "SF Mono", ui-monospace, "Menlo", Consolas, monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      margin: 20px 0 28px;
+    }
+
+    pre code {
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    ol, ul { padding-left: 1.4em; }
+    li { margin: 0 0 8px; }
+    li p { margin: 0 0 8px; }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    footer {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    footer a { color: var(--muted); text-decoration: underline; }
+    footer a:hover { color: var(--accent); }
+
+    .signoff {
+      margin-top: 24px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      h1 { font-size: 1.65rem; }
+      h2 { font-size: 1.25rem; }
+      article { padding: 24px 18px 60px; }
+      nav { padding: 16px 18px 0; }
+      pre { font-size: 0.78rem; padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../../">← Back to demo</a>
+    <a href="https://github.com/Kvkthecreator/zk-proof-of-origin" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+
+  <article>
+    <h1>Building the Primitive Mina's Funded Reclaim Integration Was Missing</h1>
+    <p class="subtitle">An in-circuit ECDSA-secp256k1 attestor verifier for Mina, why we built it, and how to use it.</p>
+    <p class="byline">Kevin Kim · April 2026</p>
+
+    <h2>The pitch we couldn't ship</h2>
+
+    <p>A few weeks ago I started <a href="https://github.com/Kvkthecreator/zk-proof-of-origin" target="_blank" rel="noopener">zk-proof-of-origin</a> — a creator-provenance zkApp on Mina. The thesis is simple: a creator should be able to cryptographically label content as human-made (or transparently AI-generated) without trusting a platform, leaking the content, or relying on a watermark that gets stripped on re-upload. One zkProgram, one succinct proof, verify in a browser in under a second.</p>
+
+    <p>Mina is the only platform where this works without compromise. The 22KB succinct verifier means anyone can verify a proof locally — no bridge, no full node, no trusted intermediary. The o1js standard library has first-class foreign-curve ECDSA and Keccak, which is what makes verifying HTTPS-attested credentials in-circuit <em>actually possible</em>.</p>
+
+    <p>Mina Foundation knows this. Their public vision they call <strong>httpz</strong> — "the internet you can trust" — is built on exactly this premise. Their <a href="https://github.com/MinaFoundation/Core-Grants/issues/22" target="_blank" rel="noopener">Core Grants RFP #22</a> funded three teams (Reclaim Protocol, zkPass, ZKON) to bridge HTTPS attestations onto Mina. We were going to consume one of those funded integrations, point it at a GitHub credential, and ship.</p>
+
+    <p>Then we audited the leading one.</p>
+
+    <h2>What we found</h2>
+
+    <p>The <a href="https://github.com/reclaimprotocol/mina-sdk-onchain-integration" target="_blank" rel="noopener">Reclaim Mina integration</a> is real code by competent people. It has a <code>Reclaim</code> SmartContract with witness-set rotation, a working keccak claim-info hasher, a deterministic witness-selection function, helper utilities. The structural thinking is right.</p>
+
+    <p>But the actual cryptographic verification — the part that proves an attestor <em>signed</em> a claim — wasn't implemented. The <code>verifyProof</code> method declares <code>signatures: [String]</code> as a struct field and never passes that signatures array to any cryptographic primitive. The Merkle witness check is a tautology (<code>witnessProof.assertEquals(witnessesRoot)</code> where <code>witnessProof = witnessesRoot</code>). And — most tellingly — the test suite runs with <code>proofsEnabled = false</code>, which means the circuit <em>never compiles</em> during tests. If it did compile, it would fail: <code>String</code> isn't a provable type in o1js, so <code>Struct({ provider: String })</code> blows up the moment you try to constrain it.</p>
+
+    <p>I'm not pointing this out to dunk on Reclaim. I'm pointing it out because <strong>the primitive every Mina application that wants to consume HTTPS-attested credentials needs — a real, in-circuit, secp256k1-ECDSA verifier — didn't exist</strong>. Not in Reclaim's repo, not in zkPass's, not in ZKON's. The RFP was funded to enable applications like ours, and the application layer was waiting on a gap nobody had closed.</p>
+
+    <p>So we closed it.</p>
+
+    <h2>The primitive</h2>
+
+    <p>The whole verifier is shorter than the audit doc. Here's the shape:</p>
+
+<pre><code class="language-typescript">@method async verifySignedClaim(
+  claimDigest: AttestorDigest,            // 32-byte keccak of claim string
+  signature: EcdsaSecp256k1,              // (r, s) — drop Ethereum's v byte
+  attestorPubKey: Secp256k1,              // witnessed pubkey (a curve point)
+  expectedAttestorAddress: Field          // public input: 20-byte ETH addr
+) {
+  // 1. Real ECDSA-secp256k1 verification — in circuit.
+  const msgHashScalar = digestToSecp256k1Scalar(claimDigest);
+  signature
+    .verifySignedHash(msgHashScalar, attestorPubKey)
+    .assertTrue('attestor ECDSA signature is invalid');
+
+  // 2. Derive the attestor's Ethereum address from the pubkey, in circuit.
+  const pubKeyBytes = pubKeyToBigEndianBytes(attestorPubKey);
+  const ethAddrDigest = Keccak.ethereum(Bytes.from(pubKeyBytes));
+  let derivedAddress = Field(0);
+  for (let i = 12; i &lt; 32; i++) {
+    derivedAddress = derivedAddress.mul(256).add(ethAddrDigest.bytes[i].value);
+  }
+
+  // 3. Bind the derived address to the trusted attestor address.
+  expectedAttestorAddress.assertEquals(derivedAddress);
+}</code></pre>
+
+    <p>That's it. Three steps. The whole thing built on o1js standard library — <code>createForeignCurve(Crypto.CurveParams.Secp256k1)</code>, <code>createEcdsa()</code>, <code>Keccak.ethereum</code>, <code>UInt8</code>, <code>Field.fromBits</code>. No external crypto, no sidecar prover, no bridge.</p>
+
+    <p>A few subtleties matter:</p>
+
+    <p><strong>Reclaim signs the digest, not the pre-image.</strong> When an attestor signs a claim, they keccak the canonical <code>provider\nparameters\ncontext</code> string off-circuit, then sign the resulting 32-byte hash directly. So we use o1js's <code>verifySignedHash</code>, which takes a pre-computed scalar — not <code>verify</code>, which would apply keccak256 a second time and produce a hash mismatch.</p>
+
+    <p><strong>The Ethereum address derivation has to live in-circuit.</strong> If we trusted an off-circuit derivation and just compared addresses, a malicious prover could substitute any pubkey with a matching ECDSA signature for a different message. The in-circuit <code>keccak256(pubkey)[12:]</code> is what proves the witnessed pubkey is the trusted attestor — without it, the public-input binding is meaningless.</p>
+
+    <p><strong>Drop the <code>v</code> byte.</strong> Ethereum's 65-byte signature format includes a recovery ID. Recovery is what lets <code>ecrecover</code> derive a pubkey from a signature alone. We don't need it — the pubkey is a witness input, so we just consume <code>(r, s)</code> and ignore <code>v</code>.</p>
+
+    <h2>Measured</h2>
+
+    <p>Standalone spike: compile 30s, prove 13s, verify 0.45s on a modern laptop. Integrated into our <code>OriginProof</code> ZkProgram alongside two other proof modes (wallet-only, and a Poseidon-committed variant for non-Reclaim attestors): compile 61s, prove 18s, verify under 1s. In the browser, prove time is 2–4× slower — call it 30–60s for a one-time circuit compile, then 5–18s per proof depending on mode.</p>
+
+    <p>Not bad for "the primitive that lets any Mina application consume Reclaim/zkPass/ZKON credentials."</p>
+
+    <h2>What we built on top</h2>
+
+    <p>Once the primitive worked, the rest was product work:</p>
+
+    <ul>
+      <li>An <code>OriginProof</code> ZkProgram that binds a content hash + Mina wallet signature + attestor signature into a single succinct proof. Verifiers check one proof type regardless of which credential path was used.</li>
+      <li>A <code>ProofCommitmentRegistry</code> SmartContract — a Mina zkApp that verifies an OriginProof on-chain and anchors a compact Poseidon digest. <a href="https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs" target="_blank" rel="noopener">Live on Mina devnet</a>.</li>
+      <li>A browser app that does everything client-side: paste content, generate proof in the browser, share via URL hash, verify locally. <a href="https://kvkthecreator.github.io/zk-proof-of-origin/" target="_blank" rel="noopener">Hosted demo</a> (uses <code>coi-serviceworker</code> to synthesize COOP/COEP headers since GitHub Pages can't set them natively, and <code>unplugin-swc</code> to preserve o1js decorator metadata under Vite).</li>
+    </ul>
+
+    <p>Full repo at <a href="https://github.com/Kvkthecreator/zk-proof-of-origin" target="_blank" rel="noopener">github.com/Kvkthecreator/zk-proof-of-origin</a>. 18/18 tests passing, decision log at <a href="https://github.com/Kvkthecreator/zk-proof-of-origin/blob/main/DECISIONS.md" target="_blank" rel="noopener"><code>DECISIONS.md</code></a>, full audit + research notes under <a href="https://github.com/Kvkthecreator/zk-proof-of-origin/tree/main/docs/analysis" target="_blank" rel="noopener"><code>docs/analysis/</code></a>.</p>
+
+    <h2>Upstreaming</h2>
+
+    <p>The primitive belongs in Reclaim's repo, not just ours. Every Mina application that wants to verify a Reclaim claim should be able to <code>npm install</code> and call <code>verifySignedClaim()</code> rather than re-derive the byte-packing math from scratch.</p>
+
+    <p>So we opened a PR: <a href="https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1" target="_blank" rel="noopener">reclaimprotocol/mina-sdk-onchain-integration#1</a>. Draft, fully backward compatible, all 18 of their existing tests still pass, and a new <code>proofsEnabled = true</code> test suite that exercises the full circuit-compiled ECDSA path (~86s total wall clock, including the compile).</p>
+
+    <p>What I want from this PR isn't credit — it's adoption. If a maintainer merges (or even iterates on) this, the next builder who shows up wanting to consume HTTPS-attested credentials on Mina doesn't have to do what we did. The ecosystem becomes strictly better off.</p>
+
+    <h2>Why this is actually a good outcome for Mina Foundation</h2>
+
+    <p>It's tempting to read "the funded integration was missing the core primitive" as a critique of Mina's grant program. It isn't. Three reasons:</p>
+
+    <ol>
+      <li><strong>The RFP was right.</strong> Funding teams to build HTTPS-to-Mina bridges is exactly how an ecosystem bootstraps. Some funded deliverables ship at varying levels of completeness — that's true of every grant program ever, in any field.</li>
+      <li><strong>The downstream-fix pattern is healthy.</strong> A creator-provenance zkApp built on the integration found a gap and contributed the fix back. That's the kind of leverage Mina wants — the grant money goes further when the ecosystem self-repairs.</li>
+      <li><strong>The primitive itself proves Mina's positioning.</strong> The reason we <em>could</em> build this in three days is that o1js has production-ready foreign-curve ECDSA and native Keccak. Try doing this on any chain that doesn't have first-class zk-SNARK tooling. You can't.</li>
+    </ol>
+
+    <p>We've applied for a Mina Builder Grant ($25K, M3–M6) to fund the next stretch — live Reclaim SDK wire-up, Auro wallet on-chain anchor flow, demo + community outreach, and finalizing this PR through maintainer review and a security pass. Decision expected by ~2026-05-20. If approved, we'll keep contributing back. If not, we'll keep contributing back anyway, just slower.</p>
+
+    <p>Either way, this primitive is now in Reclaim's PR queue. Go use it.</p>
+
+    <hr />
+
+    <footer>
+      Repo: <a href="https://github.com/Kvkthecreator/zk-proof-of-origin" target="_blank" rel="noopener">github.com/Kvkthecreator/zk-proof-of-origin</a> ·
+      Live demo: <a href="https://kvkthecreator.github.io/zk-proof-of-origin/" target="_blank" rel="noopener">kvkthecreator.github.io/zk-proof-of-origin</a> ·
+      zkApp on Mina devnet: <a href="https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs" target="_blank" rel="noopener">B62qpPxW…nbHgNoVU</a> ·
+      Upstream PR: <a href="https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1" target="_blank" rel="noopener">reclaimprotocol/mina-sdk-onchain-integration#1</a>
+      <p class="signoff">— Kevin Kim</p>
+    </footer>
+  </article>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
