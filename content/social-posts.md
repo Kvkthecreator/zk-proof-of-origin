@@ -70,8 +70,8 @@ Three formats sized for each surface. All link to the blog post (publish that fi
 
 ## Posting order
 
-1. Publish blog post (recommend Mirror or dev.to — both render markdown and have built-in distribution). Get the URL.
-2. Replace `https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/` in this file. Commit.
+1. ✅ Blog post published at https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/ (self-hosted on GitHub Pages, ships from `packages/web/public/blog/`).
+2. ✅ All four blog URL references in this file are populated with the live URL.
 3. Post X thread (highest leverage for Mina ecosystem reach — @MinaProtocol's audience is on X).
 4. Discord (Mina's #builders or #showcase channel — adjust to whatever the actual channel structure is).
 5. LinkedIn (lower priority but adds professional surface, useful if you're building investor/recruiter signal).
