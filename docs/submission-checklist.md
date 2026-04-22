@@ -46,6 +46,8 @@ During the 30-day review window, keep these moving:
 - [ ] **Join Mina Discord** (confirmation page explicitly requested). Match handle to GitHub so reviewers can connect the dots.
 - [ ] **Follow @MinaProtocol on X.** Post a short "just applied to Builders Grants — here's what we built" note with the live demo URL and zkApp address. Tag @MinaProtocol.
 - [ ] **Record + share the demo video** (transcript + shot list already in [`content/`](../content/)). Unlisted YouTube → paste URL into both proposal Links and the public-outreach post.
+- [x] **Blog post published** at https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/ — narrates the audit → primitive → upstream PR arc.
+- [ ] **Post the blog distribution drafts** from [`content/social-posts.md`](../content/social-posts.md) (X thread, LinkedIn, Mina Discord). All four `BLOG_URL` placeholders are populated.
 - [ ] **Start Milestone 6 in parallel** — the upstream PR to `reclaimprotocol/mina-sdk-onchain-integration`. This is the single most visible "shipping regardless of funding" signal we can send during the review window. Recommended: open a draft PR early so reviewers can see it in motion.
 - [ ] **Reach out to Mina Foundation contacts** directly if any warm intros exist.
 - [ ] **Day-35 nudge:** if no reply, polite email to the Grants contact listed on the program page.

@@ -12,6 +12,8 @@ The Mina Builder Grants application for $25K covering M3–M6 was submitted on 2
 |---|---|
 | Repo | https://github.com/Kvkthecreator/zk-proof-of-origin |
 | Live demo site (GitHub Pages) | https://kvkthecreator.github.io/zk-proof-of-origin/ |
+| Blog post | https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/ |
+| Upstream PR (M6) | https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1 |
 | zkApp on Mina devnet | `B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU` ([explorer](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs)) |
 | Deploy tx | `5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc` |
 | Deployer pubkey | `B62qntwPTcYk99wtEXyAJMyP3R2BCtU67daiKx51XVxcC82Y81Nudrk` (299 MINA devnet) |

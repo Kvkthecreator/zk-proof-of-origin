@@ -1,6 +1,6 @@
 # Social posts (X / LinkedIn / Discord)
 
-Three formats sized for each surface. All link to the blog post (publish that first, slot the URL into `BLOG_URL` placeholders before posting).
+Three formats sized for each surface. All link to the blog post (publish that first, slot the URL into `https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/` placeholders before posting).
 
 ## X — short thread (4 tweets)
 
@@ -25,7 +25,7 @@ Three formats sized for each surface. All link to the blog post (publish that fi
 > Just opened a draft PR contributing it back to Reclaim's repo so the next builder doesn't have to do what we did:
 >
 > 🔧 PR: github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1
-> 📝 Full write-up: BLOG_URL
+> 📝 Full write-up: https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/
 > 💻 Repo: github.com/Kvkthecreator/zk-proof-of-origin
 
 ## X — single post (if you don't want to thread)
@@ -34,7 +34,7 @@ Three formats sized for each surface. All link to the blog post (publish that fi
 >
 > Live demo, 18/18 tests, draft PR back to Reclaim's repo. Full write-up:
 >
-> BLOG_URL
+> https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/
 >
 > Mina Builder Grants application in the pipeline. Decision expected by mid-May.
 
@@ -48,7 +48,7 @@ Three formats sized for each surface. All link to the blog post (publish that fi
 >
 > Then we contributed it back upstream so the next builder doesn't have to repeat the work:
 >
-> 📝 Full write-up: BLOG_URL
+> 📝 Full write-up: https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/
 > 💻 Repo: https://github.com/Kvkthecreator/zk-proof-of-origin
 > 🔧 Upstream PR: https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1
 > 🌐 Live demo: https://kvkthecreator.github.io/zk-proof-of-origin/
@@ -64,14 +64,14 @@ Three formats sized for each surface. All link to the blog post (publish that fi
 > Built it for [zk-proof-of-origin](https://github.com/Kvkthecreator/zk-proof-of-origin), a creator-provenance zkApp now [live on devnet](https://kvkthecreator.github.io/zk-proof-of-origin/). 20/21 tests passing on the upstream PR (the only skipped one is theirs, gated on proofsEnabled — exactly the gap we close).
 >
 > PR: https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1
-> Write-up with the full story (audit → primitive → upstream): BLOG_URL
+> Write-up with the full story (audit → primitive → upstream): https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/
 >
 > Submitted a Builder Grant application earlier this week — in the meantime, happy to chat with anyone building on Reclaim/zkPass/ZKON or thinking about HTTPS-attested credentials on Mina.
 
 ## Posting order
 
 1. Publish blog post (recommend Mirror or dev.to — both render markdown and have built-in distribution). Get the URL.
-2. Replace `BLOG_URL` in this file. Commit.
+2. Replace `https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/` in this file. Commit.
 3. Post X thread (highest leverage for Mina ecosystem reach — @MinaProtocol's audience is on X).
 4. Discord (Mina's #builders or #showcase channel — adjust to whatever the actual channel structure is).
 5. LinkedIn (lower priority but adds professional surface, useful if you're building investor/recruiter signal).

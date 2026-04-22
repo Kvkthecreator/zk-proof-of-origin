@@ -153,6 +153,7 @@ The output is a standard Mina proof. Any application can verify it:
 
 - **Repository:** https://github.com/Kvkthecreator/zk-proof-of-origin
 - **Upstream PR (M6 in motion):** https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1
+- **Technical blog post:** https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/
 - **Demo video:** [TBD — see [`content/demo-script.md`](../content/demo-script.md)]
 - **Live devnet zkApp:** [`B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU`](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs) — deploy tx [`5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc`](https://minascan.io/devnet/tx/5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc)
 - **Live demo site:** https://kvkthecreator.github.io/zk-proof-of-origin/ (in-browser proof generation + verification, points at the live devnet zkApp)
