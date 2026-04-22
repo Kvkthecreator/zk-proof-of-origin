@@ -18,6 +18,15 @@ The Mina Builder Grants application for $25K covering M3–M6 was submitted on 2
 | Deploy tx | `5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc` |
 | Deployer pubkey | `B62qntwPTcYk99wtEXyAJMyP3R2BCtU67daiKx51XVxcC82Y81Nudrk` (299 MINA devnet) |
 
+## What shipped post-submission (review-window work)
+
+Four self-funded initiatives shipped on 2026-04-22 to materially complete the product before the grant decision:
+
+- **M3 — Live Reclaim SDK**: new `packages/backend/` Express proxy holding `APP_SECRET`; `packages/web/src/liveReclaim.ts` consumes the backend and runs the SDK QR flow; `ModeSelector` gains a third "Reclaim — live ⚡" card gated on `VITE_RECLAIM_BACKEND_URL`. Backend smoke-tested locally; live mode tested with placeholder env will require real Reclaim creds from `dev.reclaimprotocol.org` to fully exercise.
+- **M4 — Auro wallet anchor**: `packages/web/src/auro.ts` builds the `ProofCommitmentRegistry.anchor(proof)` tx via `Mina.transaction`, signs through Auro, sends to devnet. New `AnchorPanel` in the result panels feature-detects Auro and surfaces a Connect → Anchor flow. Will bump `proofCount` on the deployed zkApp from 0 to 1 on first real use.
+- **IDB cache**: `packages/web/src/idbCache.ts` implements o1js's `Cache` interface backed by IndexedDB. First-visit compile cost unchanged (~30-60s); subsequent visits skip compile entirely.
+- **Fixture-doc clarification**: explains why our committed demo fixture uses a demo attestor key rather than the canonical Reclaim address (re-using a real claim would expose someone's identity).
+
 Test suite: 18/18 passing across 5 files. Production build clean. Live site verified rendering in Chrome on 2026-04-20.
 
 ## What shipped in this session
