@@ -78,6 +78,8 @@ The web app ships with a "Load demo claim" button that lets you generate a full 
 
 **Or try it hosted:** https://kvkthecreator.github.io/zk-proof-of-origin/
 
+**Public-goods upstream PR (M6 in motion):** [reclaimprotocol/mina-sdk-onchain-integration#1](https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1) — draft PR contributing our in-circuit ECDSA-secp256k1 verifier back to the Reclaim Mina SDK.
+
 ## Grant targeting
 
 Targeting the [Mina Builder Grants Program](https://minaprotocol.com/builder-grants-program) — rolling applications, 30-day decisions, $5K–$30K tier for teams with working zkApps and a credible adoption story. See [docs/grant-proposal.md](docs/grant-proposal.md) for the submission-ready proposal.

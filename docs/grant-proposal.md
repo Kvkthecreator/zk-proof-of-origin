@@ -105,7 +105,7 @@ Calibrated to the Mina Builder Grants band ($5K–$30K) with headroom for review
 | 3 | **Live Reclaim SDK integration** — wire `@reclaimprotocol/js-sdk` with a QR/app-clip flow to real providers (GitHub, Twitter/X), plus a minimal backend proxy for `APP_SECRET`. End-to-end "verified human" proofs from real HTTPS sources, not fixtures. | 2 weeks | $10,000 |
 | 4 | **On-chain anchor submission flow** — browser-side `anchor(proof)` via Auro wallet integration so users actually write commitments to the deployed zkApp, not just read them. Closes the read/write gap in the current verifier UI. | 1.5 weeks | $6,000 |
 | 5 | **Demo, landing site polish, submission materials, community outreach** — 60–90s demo video, README and docs polish, example integrations, blog post + community-call walkthrough per program expectations. | 1 week | $3,000 |
-| 6 | **Public-goods upstream contribution** — open a PR to [reclaimprotocol/mina-sdk-onchain-integration](https://github.com/reclaimprotocol/mina-sdk-onchain-integration) contributing our in-circuit ECDSA-secp256k1 verifier + documented test vectors. Includes a third-party security review pass on the verifier before PR. | 2 weeks | $6,000 |
+| 6 | **Public-goods upstream contribution** — [draft PR #1 already opened upstream](https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1) (2026-04-21) contributing our in-circuit ECDSA-secp256k1 verifier + new compile-enabled test (20/21 passing). Remaining grant scope: maintainer review iteration, security review pass on the verifier, finalization. | 2 weeks | $6,000 |
 
 **Primary ask: $25,000 for Milestones 3–6 (~6.5 weeks solo FTE).** Fits cleanly inside the Builder Grants band with headroom. Delivers (a) a live end-to-end "verified human" proof flow against a real HTTPS source, (b) an on-chain write path so the deployed zkApp gets used rather than just read, (c) a public good contributed back to Mina's own funded Reclaim stack.
 
@@ -152,6 +152,7 @@ The output is a standard Mina proof. Any application can verify it:
 ## Links
 
 - **Repository:** https://github.com/Kvkthecreator/zk-proof-of-origin
+- **Upstream PR (M6 in motion):** https://github.com/reclaimprotocol/mina-sdk-onchain-integration/pull/1
 - **Demo video:** [TBD — see [`content/demo-script.md`](../content/demo-script.md)]
 - **Live devnet zkApp:** [`B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU`](https://minascan.io/devnet/account/B62qpPxWR3QXCuA4bEZTmtz5ZmFBfFPpZyCrxo4NuWS6uJ9nbHgNoVU/zk-txs) — deploy tx [`5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc`](https://minascan.io/devnet/tx/5JtyAdhT2AN7kocAbc6kDFp4jkfcDnmFTexQ2UMg4J3QSVoVRVCc)
 - **Live demo site:** https://kvkthecreator.github.io/zk-proof-of-origin/ (in-browser proof generation + verification, points at the live devnet zkApp)
