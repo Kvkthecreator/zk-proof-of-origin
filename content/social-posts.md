@@ -1,6 +1,6 @@
 # Social posts (X / LinkedIn / Discord)
 
-Three formats sized for each surface. All link to the blog post (publish that first, slot the URL into `https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/` placeholders before posting).
+Three formats sized for each surface. Blog post is live at https://kvkthecreator.github.io/zk-proof-of-origin/blog/zk-ecdsa-primitive/ — all URLs below already point to it.
 
 ## X — short thread (4 tweets)
 
