@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import QRCode from 'react-qr-code';
 import {
   proveHumanFlow,
   type ProveProgress,
@@ -9,9 +10,21 @@ import {
   type ReclaimProveProgress,
   type ReclaimProveResult,
 } from '../reclaimProver';
+import {
+  runLiveReclaimFlow,
+  type LiveReclaimStage,
+} from '../liveReclaim';
+import {
+  anchorProofViaAuro,
+  connectAuro,
+  detectAuroState,
+  type AnchorResult,
+  type AuroState,
+} from '../auro';
 import { encodeProofToUrl } from '../proofEncoding';
 import { DEMO_RECLAIM_CLAIM_JSON } from '../demoFixture';
 import { ModeSelector, type CreatorMode } from './ModeSelector';
+import type { OriginProofClass } from '@zk-proof-of-origin/circuits';
 
 const WALLET_STAGE_COPY: Record<ProveProgress['stage'], string> = {
   compiling: 'Compiling circuit (one-time, ~30–60s in browser)',
@@ -76,13 +89,19 @@ export function CreatorTab() {
     null
   );
 
+  const [liveStage, setLiveStage] = useState<LiveReclaimStage | null>(null);
+
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const running =
     (walletProgress !== null && walletResult === null) ||
-    (reclaimProgress !== null && reclaimResult === null);
+    (reclaimProgress !== null && reclaimResult === null) ||
+    (liveStage !== null &&
+      liveStage.stage !== 'received-proof' &&
+      liveStage.stage !== 'error' &&
+      reclaimResult === null);
 
   function resetForRun() {
     setError(null);
@@ -92,6 +111,7 @@ export function CreatorTab() {
     setReclaimResult(null);
     setWalletProgress(null);
     setReclaimProgress(null);
+    setLiveStage(null);
   }
 
   function computeShareUrl(proof: ProveResult['proof']) {
@@ -109,11 +129,24 @@ export function CreatorTab() {
         setWalletResult(r);
         setShareUrl(computeShareUrl(r.proof));
         setWalletProgress({ stage: 'done' });
-      } else {
+      } else if (mode === 'reclaim-pasted') {
         if (!reclaimJson.trim()) {
           throw new Error('Paste a Reclaim claim JSON before generating.');
         }
         const r = await proveReclaimFlow(text, reclaimJson, setReclaimProgress);
+        setReclaimResult(r);
+        setShareUrl(computeShareUrl(r.proof));
+        setReclaimProgress({ stage: 'done' });
+      } else if (mode === 'reclaim-live') {
+        // Two phases:
+        // 1) live Reclaim flow → user scans QR → attestor signs → we get JSON
+        // 2) feed JSON into the same proveReclaimFlow the paste mode uses
+        const live = await runLiveReclaimFlow(setLiveStage);
+        const r = await proveReclaimFlow(
+          text,
+          live.jsonForExistingProver,
+          setReclaimProgress
+        );
         setReclaimResult(r);
         setShareUrl(computeShareUrl(r.proof));
         setReclaimProgress({ stage: 'done' });
@@ -200,6 +233,34 @@ export function CreatorTab() {
         </div>
       )}
 
+      {mode === 'reclaim-live' && liveStage?.stage === 'awaiting-user' && (
+        <div className="panel">
+          <div className="label">Scan with your phone</div>
+          <div
+            style={{
+              background: 'white',
+              padding: 16,
+              display: 'inline-block',
+              borderRadius: 8,
+            }}
+          >
+            <QRCode value={liveStage.qrUrl} size={200} />
+          </div>
+          <div className="hint" style={{ marginTop: 12 }}>
+            The Reclaim attestor flow runs on your phone. Sign in to your
+            HTTPS source (GitHub, etc.); when you finish, the attestor
+            signs a claim and the browser receives it. Then proof
+            generation runs locally.
+          </div>
+          <div
+            className="hint"
+            style={{ marginTop: 8, wordBreak: 'break-all', fontSize: 11 }}
+          >
+            Or open on this device: <a href={liveStage.qrUrl}>{liveStage.qrUrl}</a>
+          </div>
+        </div>
+      )}
+
       <div className="panel">
         <div className="row">
           <button
@@ -212,7 +273,9 @@ export function CreatorTab() {
           <span className="muted">
             {mode === 'wallet'
               ? 'Mode: wallet signature (ephemeral).'
-              : 'Mode: Reclaim attestor (ECDSA-secp256k1 verified in-circuit).'}
+              : mode === 'reclaim-live'
+              ? 'Mode: live Reclaim (QR scan → attestor signs → in-circuit ECDSA).'
+              : 'Mode: Reclaim attestor (paste pre-signed claim).'}
           </span>
         </div>
 
@@ -253,6 +316,7 @@ export function CreatorTab() {
           shareUrl={shareUrl}
           copied={copied}
           onCopy={copyShareUrl}
+          proof={walletResult.proof}
         />
       )}
 
@@ -277,6 +341,7 @@ export function CreatorTab() {
           shareUrl={shareUrl}
           copied={copied}
           onCopy={copyShareUrl}
+          proof={reclaimResult.proof}
         />
       )}
     </div>
@@ -289,12 +354,14 @@ function ResultPanel({
   shareUrl,
   copied,
   onCopy,
+  proof,
 }: {
   title: string;
   rows: Array<[string, string]>;
   shareUrl: string;
   copied: boolean;
   onCopy: () => void;
+  proof: InstanceType<typeof OriginProofClass>;
 }) {
   return (
     <div className="panel">
@@ -330,6 +397,121 @@ function ResultPanel({
         The link contains the full proof (base64url-encoded in the URL hash).
         Anyone who opens it can verify locally — no server involved.
       </div>
+
+      <AnchorPanel proof={proof} />
+    </div>
+  );
+}
+
+function AnchorPanel({
+  proof,
+}: {
+  proof: InstanceType<typeof OriginProofClass>;
+}) {
+  const [auro, setAuro] = useState<AuroState>({ kind: 'unavailable' });
+  const [stage, setStage] = useState<string | null>(null);
+  const [result, setResult] = useState<AnchorResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    void detectAuroState().then(setAuro);
+  }, []);
+
+  async function onConnect() {
+    setError(null);
+    try {
+      const { address } = await connectAuro();
+      setAuro({ kind: 'connected', address });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  }
+
+  async function onAnchor() {
+    setError(null);
+    setResult(null);
+    setStage('Starting');
+    try {
+      const r = await anchorProofViaAuro(proof, setStage);
+      setResult(r);
+      setStage(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+      setStage(null);
+    }
+  }
+
+  if (auro.kind === 'unavailable') {
+    return (
+      <div
+        className="hint"
+        style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid var(--border)' }}
+      >
+        Want to anchor this proof on-chain? Install the{' '}
+        <a href="https://www.aurowallet.com/" target="_blank" rel="noreferrer">
+          Auro wallet
+        </a>{' '}
+        and reload — an Anchor button will appear here.
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid var(--border)' }}
+    >
+      <div className="label">Anchor on Mina devnet</div>
+      {auro.kind === 'disconnected' && (
+        <div className="row" style={{ marginTop: 8 }}>
+          <button className="secondary" onClick={onConnect}>
+            Connect Auro
+          </button>
+          <span className="muted">
+            Anchor a Poseidon digest of this proof to our deployed
+            ProofCommitmentRegistry zkApp on Mina devnet.
+          </span>
+        </div>
+      )}
+      {auro.kind === 'connected' && !result && (
+        <div className="row" style={{ marginTop: 8 }}>
+          <button
+            className="primary"
+            onClick={onAnchor}
+            disabled={stage !== null}
+          >
+            {stage ? 'Anchoring…' : 'Anchor proof on-chain'}
+          </button>
+          <span className="muted mono" style={{ fontSize: 11 }}>
+            {auro.address}
+          </span>
+        </div>
+      )}
+      {stage && (
+        <div className="status" style={{ marginTop: 12 }}>
+          <span className="dot" />
+          <span>{stage}</span>
+        </div>
+      )}
+      {result && (
+        <div className="status ok" style={{ marginTop: 12, flexDirection: 'column', alignItems: 'flex-start' }}>
+          <div>
+            <span className="dot" /> Anchored — tx{' '}
+            <a href={result.explorerUrl} target="_blank" rel="noreferrer">
+              {result.txHash.slice(0, 12)}…
+            </a>
+          </div>
+          <div className="hint" style={{ marginTop: 6 }}>
+            Inclusion typically lands in 2–5 minutes. The verifier panel
+            will then show this proof as anchored-latest.
+          </div>
+        </div>
+      )}
+      {error && (
+        <div className="status err" style={{ marginTop: 12 }}>
+          <span className="dot" />
+          <span>{error}</span>
+        </div>
+      )}
     </div>
   );
 }
