@@ -1,0 +1,26 @@
+{
+  "name": "@zk-proof-of-origin/backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Minimal proxy holding Reclaim APP_SECRET. ~50 LOC. The web app talks to this for the one piece of state it cannot hold safely in the bundle.",
+  "type": "module",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@reclaimprotocol/js-sdk": "^5.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.0"
+  }
+}

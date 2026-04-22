@@ -5,7 +5,8 @@
   "description": "Cryptographic proof of content origin on Mina Protocol",
   "workspaces": [
     "packages/circuits",
-    "packages/web"
+    "packages/web",
+    "packages/backend"
   ],
   "scripts": {
     "test": "npm run test --workspaces",
