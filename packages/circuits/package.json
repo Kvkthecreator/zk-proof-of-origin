@@ -16,9 +16,10 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "o1js": "^2.2.0"
+    "o1js": "^2.15.0"
   },
   "devDependencies": {
+    "@o1js/native": "^2.15.0",
     "@swc-node/register": "^1.11.1",
     "@swc/core": "^1.15.26",
     "typescript": "^5.7.0",
